@@ -43,13 +43,16 @@ public class RestProcessor implements Processor{
 			
 			}
 
+			System.out.println("msg :" + msg.toString());
+			System.out.println("fmsg :" + fmsg.toString());
+
 			//combine the two messages and transform to the response message
 			if (msg.getError() == 0) {
 
                             if (msg.getUrl()!=null) {
-                                cacheResponse.setUrl("http://carbon.dlib.indiana.edu:8101" + msg.getUrl());
+                                cacheResponse.setUrl(exchange.getContext().resolvePropertyPlaceholders("{{hostname}}") +":" + exchange.getContext().resolvePropertyPlaceholders("{{port}}") + msg.getUrl());
 				if (fmsg.getError() == 0) {
-				    if (fmsg.getChecksum() != null) {
+				    if (!fmsg.equals(null)) {
 					cacheResponse.setFixityAvailable(true);
                                         cacheResponse.setChecksum(fmsg.getChecksum());
 					//return time unit is second, need to change to millisecond
@@ -59,10 +62,11 @@ public class RestProcessor implements Processor{
                                         cacheResponse.setFixityDate(df.format(date));
 					cacheResponse.setStatus("staged");
 				    }
-				    else {
+				}
+				else if (fmsg.getError() == -666) {
 				    	cacheResponse.setStatus("calculating checksum");
 					cacheResponse.setChecksum(null);
-				    }
+				    
 			        }
 				else {
 				    cacheResponse.setStatus("staged");

@@ -38,7 +38,7 @@ public class ManagerInfo{
 	}
 	
 	public String toString() {
-		return "url: "+ this.url + "\n" + "message: " + this.message + "\n";
+		return "url: "+ this.url + "\n" + "message: " + this.message + "\t" + this.error+"\n";
 	}
 
 

@@ -1,9 +1,5 @@
 package edu.indiana.dlib.hydradam.storageproxy;
 
-/**
- * Hello world!
- */
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.MediaType;

@@ -23,11 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class StorageProxyRouter extends RouteBuilder {
 
 	private static final Logger LOGGER = getLogger(StorageProxyRouter.class);
-	private String fileId;
-	private String restEndpoint;
+	//private String fileId;
+	//private String restEndpoint;
 
 	public void configure() throws Exception {
-		from("cxfrs:http://0.0.0.0:8555?resourceClasses=edu.indiana.dlib.hydradam.storageproxy.CacheResource&bindingStyle=SimpleConsumer")
+		from("cxfrs:http://{{proxyhost}}:{{proxyport}}?resourceClasses=edu.indiana.dlib.hydradam.storageproxy.CacheResource&bindingStyle=SimpleConsumer")
 		.recipientList(simple("direct:${header.operationName}"));
 
 
@@ -54,14 +54,22 @@ public class StorageProxyRouter extends RouteBuilder {
 
 
 		from("direct:getCache")
-		.process(new CacheProcessor() )
+		.process("{{processorbean}}")
                 .to("jetty:http://{{hostname}}:{{port}}/{{servicename}}?bridgeEndpoint=true&amp;throwExceptionOnFailure=false")
 		.log("get cache body...${body}...done");
 
 		from("direct:getChecksum")
-		.process(new CacheProcessor())
+		//.process(new DefaultProcessor()) 
+		.processRef("{{processorbean}}") 
+
                 .to("jetty:http://{{hostname}}:{{port}}/{{fixityservice}}?bridgeEndpoint=true&amp;throwExceptionOnFailure=false")
 		.log("get checksum...${body}");
+
+
+		
+		from("direct:listFile")
+		.log("list file body------${body}");
+
 
 		from("direct:output")
 		.log("output header...${headers}")
@@ -109,8 +117,8 @@ public class StorageProxyRouter extends RouteBuilder {
 
 		from("direct:fixity")
 		.log("fixity header ... ${headers}")
-		.inOnly("direct:stagenoreturn")
-		.inOnly("direct:checksum")
+		.wireTap("direct:stagenoreturn")
+		.wireTap("direct:checksum")
 		.to("direct:joboutput");
 
 		from("direct:checksum")

@@ -47,7 +47,7 @@ public class ManagerFixityInfo{
 	}
 	
 	public String toString() {
-		return "message: " + this.message + "\n";
+		return "message: " + this.message +"\t" +this.error+ "\n";
 	}
 
 
