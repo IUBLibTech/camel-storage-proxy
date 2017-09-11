@@ -24,8 +24,6 @@
 	<cm:property name="fixityservice" value="cacheManager.cgi/checksum/"/>
 	<cm:property name="restEndpoint" value="cxfrs:bean:rsServer?bindingStyle=SimpleConsumer"/>
 
-	<cm:property name="staging.srcpath" value="/srv/fedora/repository/karaf/data/fs-storage/"/>
-        <cm:property name="staging.despath" value="/srv/fedora/repository/karaf/data/fs-staging/"/>
 	
   </cm:default-properties>
   </cm:property-placeholder>        
