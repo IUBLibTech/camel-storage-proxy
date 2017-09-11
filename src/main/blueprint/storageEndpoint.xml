@@ -31,9 +31,7 @@
   </cm:property-placeholder>        
 
 <bean id="defaultProcessor" class="edu.indiana.dlib.hydradam.storageproxy.DefaultProcessor"/>
-<!--bean id="proxyRoutes" class="edu.indiana.dlib.hydradam.storageproxy.StorageProxyRouter"/-->
-<bean id="proxyRoutes" class="edu.indiana.dlib.hydradam.storageproxy.FSProxyRouter"/>
-<bean id ="fileBean" class ="edu.indiana.dlib.hydradam.storageproxy.FileBean"/>
+<bean id="proxyRoutes" class="edu.indiana.dlib.hydradam.storageproxy.StorageProxyRouter"/>
 
 <cxf:rsServer id="rsServer" address="http://0.0.0.0:8555" serviceClass="edu.indiana.dlib.hydradam.storageproxy.CacheResource" loggingFeatureEnabled="true" >
 	<cxf:providers>
